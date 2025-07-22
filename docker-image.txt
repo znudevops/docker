@@ -41,5 +41,11 @@ Working on docker images
 10 To delete all image
    docker system prune -af
 
+11 To create a docker image from a dockerfile
+   docker build -t image_name .
+
+12 To create an image from a customised container
+   docker commit container_id/container_name image_name
+
 
   
