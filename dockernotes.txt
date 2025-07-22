@@ -4,3 +4,7 @@ What is docker?
 
 Docker is an open-source containerization technology that enables you to build, package, and run applications as lightweight containers. These containers encapsulate the application along with its dependencies, allowing it to run consistently across different environments.
 Docker provides process isolation, meaning each application runs independently in its own container. This isolation does not rely on the host operating system, making the containers portable and OS-agnostic—as long as Docker is installed.
+
+https://get.docker.com/
+
+https://hub.docker.com/
