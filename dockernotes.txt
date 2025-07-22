@@ -1,0 +1,4 @@
+What is docker?
+  Docker is an opensource containerizing technology. It allows build, package and run the apllication in containers.
+  It provides the process isolation, whcih is not depends on the os.
+  
