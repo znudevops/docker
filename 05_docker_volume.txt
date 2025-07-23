@@ -1,0 +1,16 @@
+
+
+
+Working on docker volumes
+============================
+37 To see the list of docker  volumes
+   docker volume ls
+
+38 To create a docker volume
+   docker volume create volume_name
+
+39 To get detailed info about a volume
+   docker volume inspect volume_name/volume_id
+
+40 To delete a volume
+   docker volume rm volume_name/volume_id
