@@ -13,3 +13,28 @@ There are three main ways to set up a multi-container architecture using Docker:
 3. Docker Networks
    - This is the modern and flexible way to connect multiple containers.  
    - Containers on the same custom network can easily discover and communicate with each other using service names.
+
+
+
+Using `--link` Option in Docker (Legacy Method):
+
+# Step 1: Pull the BusyBox image
+docker pull busybox
+
+# Step 2: Run the first container named 'b1'
+docker run --name b1 -it busybox
+
+# Step 3: Run the second container 'b2' and link it to 'b1' with an alias
+docker run --name b2 --link b1:busybox1 -it busybox
+
+
+What’s Happening Here:
+- You're pulling the `busybox` image—a lightweight Linux distribution great for testing.
+- `b1` is the first container.
+- `b2` is started with a `--link` to `b1`, using the alias `busybox1`. This allows `b2` to access network details of `b1` using either `b1` or `busybox1` as the hostname.
+
+Container Terminal Behavior:
+- When you run a container interactively using `-it`, you’ll get a terminal session inside it.
+- If you type `exit` inside the container, it will stop and terminate.
+- To **detach** from the container without stopping it, use the key combination `Ctrl + p`, followed by `Ctrl + q`.
+
