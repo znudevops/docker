@@ -1,0 +1,66 @@
+Running Nginx in Docker
+
+Step-by-Step Commands
+
+# Step 1: Pull the official Nginx image
+docker pull nginx
+
+# Step 2: Run a container with Nginx (in foreground mode with logs)
+docker run nginx
+
+# Step 3: Run the container in detached mode (runs in background)
+docker run -d nginx
+
+# Step 4: Provide a custom name for the container
+docker run --name webserver -d nginx
+
+# Step 5: Map a custom port from host to container
+docker run --name webserver -d -p 8080:80 nginx
+
+# Step 6: Use -P to automatically map container ports to host ports
+docker run --name webserver -d -P nginx
+
+- **Foreground vs. Detached Mode**:  
+  Running without `-d` shows the container logs in the terminal. Use `-d` to run the container in the background.
+
+- **`--name` Option**:  
+  Allows you to assign a custom name to your container (e.g., `webserver`). If omitted, Docker assigns a random name.
+
+- **Port Mapping**:  
+  - `-p 8080:80` maps port 80 inside the container to port 8080 on the host.  
+  - `-P` automatically maps any exposed ports in the container to available ports on the host.
+
+- **Default Behavior**:  
+  - Without port mapping, the container still runs—just not accessible via host IP unless the default ports are exposed.  
+  - Without `--name`, Docker gives your container a fun, randomly generated name like `furious_mustang`.
+
+
+Port Mapping in Docker Containers
+docker run --name webserver -d -p 8080:80 nginx
+
+What this means:
+- `--name webserver` — You're giving the container a custom name: `webserver`.
+- `-d` — Runs the container in detached mode (in the background).
+- `-p 8080:80` — This is **port mapping**, and it's key for accessing your container’s services from the host.
+
+| Port        | Description                                                                  |
+|-------------|------------------------------------------------------------------------------|
+| `8080`      | Host machine’s port — where you access the app (e.g., http://localhost:8080) |
+| `80`        | Container’s internal port — where Nginx is listening                         |
+
+So "Expose Nginx running on port 80 inside the container to host's port 8080."
+
+Why Is This Important?
+Every Docker image (like `nginx`, `mysql`, etc.) defines its own default **internal ports** based on how the software works. For example:
+- Nginx listens on port **80** (HTTP)
+- MySQL listens on port **3306**
+- Redis listens on port **6379**
+
+You can find these internal ports by checking the image's documentation or inspecting it with:
+
+docker inspect <image_name>
+
+
+If you don't specify port mapping (`-p` or `-P`), the container will still run—but its services won't be reachable from the outside unless exposed explicitly.
+
+
