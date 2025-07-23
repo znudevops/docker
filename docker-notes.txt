@@ -68,3 +68,75 @@ stored. This is of two types
 1 Public Registry( hub.docker.com)
 2 Private Registry(Setup on one of our local servers)
 
+
+1. Understanding the Basics:
+Virtualization: 
+Virtualization is a process that allows running multiple OS’s parallelly on a single hardware OS.
+ 
+In a virtualization architecture, we start with the host hardware (bare metal). On top of the hardware, we have the host operating system (host OS), where a hypervisor is installed. The hypervisor enables the creation and management of multiple guest operating systems (guest OS). Each guest OS operates independently and can run multiple applications simultaneously.
+A hypervisor (like VMware, VirtualBox, or KVM) sits on top of physical hardware and allows multiple virtual machines to run independently.
+How Virtual Machines Work (Architecture)
+Host Machine: The physical server or computer where VMs run.
+Hypervisor: Software that creates and manages VMs (examples: VMware ESXi, VirtualBox, KVM, Microsoft Hyper-V).
+Guest OS: Each VM runs a separate operating system inside the hypervisor.
+Applications: Apps run inside each VM independently.
+Example Scenario:
+•	A developer has a Windows PC but wants to test applications on Linux.
+•	They install VMware or VirtualBox, create a Linux VM, and install the application there.
+
+
+_______________________________________________________________________________________________
+What are Virtual Machines (VMs)?
+A Virtual Machine (VM) is a software-based emulation of a physical computer. Each VM runs a full operating system (OS) and has its own virtual CPU, memory, disk, and network interface, even though it's running on shared hardware.
+The disadvantage of this approach is that applications running on the guest OS must pass through multiple layers to access the hardware resources, which can introduce latency and reduce performance.
+Limitations of Virtual Machines
+While VMs solved many issues of traditional hardware, they have several drawbacks:
+Heavy Resource Usage – Each VM needs its own OS, which consumes CPU, RAM, and storage.
+Slow Boot Time – VMs take minutes to start because they load an entire OS.
+Complex Management – Managing multiple VMs requires more maintenance.
+Inefficient Scaling – Running multiple instances of an application requires multiple VMs, making scaling expensive.
+Because of these issues, containers were introduced as a lightweight alternative to virtualization.
+
+__________________________________________________________________________________
+What is Docker?
+Docker is an open-source platform for containerization, which allows applications to be packaged along with their dependencies and run in isolated containers. A container is a lightweight, standalone, and executable package that includes everything an application needs to run (code, libraries, dependencies, and environment settings). and share the host machine’s operating system kernel, eliminating the need for separate guest operating systems.
+Docker containers are portable and can be easily deployed across different environments, such as development, testing, and production. Docker uses containerization technology to provide resource isolation and security for applications, while sharing the host system’s resources efficiently.
+Docker containers are based on Docker images, which are read-only templates containing the application and its dependencies. 
+
+In Docker containerization, we have bare metal (host hardware) on top of which we install the host OS. On the host OS, we install an application called the Docker Engine. The Docker Engine enables us to run any application in the form of containers. Docker is a technology used to create and manage these containers. It achieves what is commonly known as "process isolation", meaning that applications (processes) often have dependencies on a specific OS. Docker eliminates this dependency, allowing applications to run as containers on any OS where the Docker Engine is installed.
+Since containers pass through fewer layers to access hardware resources compared to traditional virtualization, they offer better performance. Additionally, organizations can reduce costs by avoiding the need to purchase multiple OS licenses to support various applications.
+
+__________________________________________________________________________________
+Docker architecture:
+Docker uses a client-server architecture. The Docker client talks to the Docker daemon, which does the building, running, and distributing your Docker containers. The Docker client and daemon can run on the same system, or you can connect a Docker client to a remote Docker daemon. The Docker client and daemon communicate using a REST API, over UNIX sockets or a network interface. Another Docker client is Docker Compose, that lets you work with applications consisting of a set of containers.
+ 
+Docker daemon:
+The Docker daemon (dockerd) listens for Docker API requests and manages Docker objects such as images, containers, networks, and volumes. A daemon can also communicate with other daemons to manage Docker services.
+Docker Client:
+The Docker client (docker) is the primary way that many Docker users interact with Docker. When you use commands such as docker run, the client sends these commands to dockerd, which carries them out. The docker command uses the Docker API. The Docker client can communicate with more than one daemon.
+Docker Host:
+Docker Host is nothing but a server where the docker is installed and it is a physical or virtual machine that runs Docker images and containers
+Docker registry:
+A Docker registry stores Docker images. Docker Hub is a public registry that anyone can use, and Docker looks for images on Docker Hub by default. You can even run your own private registry.
+When you use the docker pull or docker run commands, Docker pulls the required images from your configured registry. When you use the docker push command, Docker pushes your image to your configured registry.
+Docker objects:
+When you use Docker, you are creating and using images, containers, networks, volumes, plugins, and other objects. This section is a brief overview of some of those objects.
+Images:
+An image is a read-only template with instructions for creating a Docker container. 
+an image is based on another image, with some additional customization. For example, you may build an image which is based on the ubuntu image, but installs the Apache web server and your application, as well as the configuration details needed to make your application run.
+You might create your own images or you might only use those created by others and published in a registry. To build your own image, you create a Dockerfile with a simple syntax for defining the steps needed to create the image and run it. Each instruction in a Dockerfile creates a layer in the image. When you change the Dockerfile and rebuild the image, only those layers which have changed are rebuilt. This is part of what makes images so lightweight, small, and fast, when compared to other virtualization technologies.
+Containers:
+A container is a runnable instance of an image. 
+You can create, start, stop, move, or delete a container using the Docker API or CLI. You can connect a container to one or more networks, attach storage to it, or even create a new image based on its current state.
+The following command runs an ubuntu container, attaches interactively to your local command-line session, and runs /bin/bash.
+$ docker run -it ubuntu /bin/bash
+When you run this command, the following happens (assuming you are using the default registry configuration):
+1.	If you don't have the ubuntu image locally, Docker pulls it from your configured registry, as though you had run docker pull ubuntu manually.
+2.	Docker creates a new container, as though you had run a docker container create command manually.
+3.	Docker allocates a read-write filesystem to the container, as its final layer. This allows a running container to create or modify files and directories in its local filesystem.
+4.	Docker creates a network interface to connect the container to the default network, since you didn't specify any networking options. This includes assigning an IP address to the container. By default, containers can connect to external networks using the host machine's network connection.
+5.	Docker starts the container and executes /bin/bash. Because the container is running interactively and attached to your terminal (due to the -i and -t flags), you can provide input using your keyboard while Docker logs the output to your terminal.
+6.	When you run exit to terminate the /bin/bash command, the container stops but isn't removed. You can start it again or remove it.
+
+
+
