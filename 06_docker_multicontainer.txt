@@ -1,0 +1,15 @@
+Approaches to Multi-Container Architecture in Docker
+
+There are three main ways to set up a multi-container architecture using Docker:
+
+1. `--link` (Deprecated)
+   - This was an early method for connecting containers and enabling communication between them.  
+   - It’s now considered outdated and has been largely replaced by Docker networks.
+
+2. Docker Compose  
+   - A powerful tool that lets you define and manage multi-container applications using a `docker-compose.yml` file.  
+   - You can configure services, networks, volumes, and dependencies all in one place.
+
+3. Docker Networks
+   - This is the modern and flexible way to connect multiple containers.  
+   - Containers on the same custom network can easily discover and communicate with each other using service names.
