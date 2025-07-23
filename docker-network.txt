@@ -1,0 +1,21 @@
+
+
+Working on docker networks
+===============================
+31 To see the list of docker networks
+   docker network ls
+
+32 To create a docker network
+   docker network create --driver network_type network_name
+
+33 To get detailed info about a network
+   docker network insepct network_name/network_id
+
+34 To delete a docker network
+   docker network rm network_name/network_id
+
+35 To connect a running container to a network
+   docker netowork connect network_name/network_id container_name/container_id
+
+36 To disconnect a running container to a network
+   docker netowork disconnect network_name/network_id container_name/container_id
