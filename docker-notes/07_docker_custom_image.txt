@@ -1,0 +1,31 @@
+We can create images from customized containers
+
+docker commit container_name image_name
+
+11 To create a docker image from a dockerfile
+   docker build -t image_name .
+
+12 To create an image from a customised container
+   docker commit container_id/container_name image_name
+
+Ex:
+create an ubuntu container and install git, maven, jenkins, etc..
+
+docker run --name u1 -it ubuntu
+go inside ubuntu container
+
+docker exec -it u1 bash
+install git, maven, jenkins, etcc.
+
+create an image from customized container
+
+docker commit u1 myubuntu
+
+myubuntu image will create
+
+docker images
+
+we can create a container using this image
+
+docker run --name u2 -it myubuntu
+
