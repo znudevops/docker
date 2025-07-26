@@ -14,3 +14,167 @@ Working on docker volumes
 
 40 To delete a volume
    docker volume rm volume_name/volume_id
+
+
+________________________________________________________________________
+
+Docker Volumes:
+Volume is backup mechanism of Docker
+Containers are temporary, but the data which is processed by container should be persistent
+
+3 types of volumes in docker:
+______________________________
+
+1. Simple docker volumes
+2. Sharable docker volumes
+3. Docker volume containers
+
+The purpose of docker volume is preserve the data even though the container deleted.
+
+-v used to attach an external device or directory as a volume to container
+--volume-from is used to share volume between multiple containers
+
+mkdir /data
+
+docker run --name u1 -it -v /data ubuntu
+
+docker volume ls
+
+docker volume inspect volume_name
+
+
+sharable volume:
+
+The volume can share between multiple containers
+
+--volume-from
+
+docker run --name u1 -v /data ubuntu
+
+docker run --name u2 --volume-from u1 ubuntu
+
+docker run --name u3 --volume-from u2 ubuntu
+
+Docker Volume:
+
+docker volume create volume_name
+
+docker volume create myvolume
+
+docker volume ls
+
+docker run --name u1 -it -v myvolume:/tmp ubuntu
+
+docker run --name u2 -it -v myvolume:/home ubuntu
+
+
+docker volume inspect myvolume
+
+get the mount path
+
+navigate to mount path
+
+create a file index.html
+
+
+create nginx container with customized web page to mount a volume 
+
+
+docker run --name mynginx -p 8080:80 -v myvolume:/usr/share/nginx/html -d nginx
+
+docker run --name webserver -P -v myvolume:/usr/share/nginx/html -d nginx
+
+
+
+This volume can attach to multiple containers.
+
+curl http://localhost:8080
+
+_______________________________________________________________________________
+
+## 📦 Docker Volumes: Persistent Data in Containers
+
+Docker volumes are used to **store persistent data**, even after the container is stopped or removed. While containers are ephemeral by design, volumes ensure important data remains intact.
+
+### 🔍 Types of Docker Volumes
+
+1. **Named Volumes**  
+   - Created and managed by Docker.
+   - Stored under `/var/lib/docker/volumes`.
+
+2. **Bind Mounts (Host Directory Volumes)**  
+   - Use host machine directories as volumes.
+   - Mounted with `-v /host/path:/container/path`.
+
+3. **Volume Sharing Between Containers**  
+   - Containers can share volumes via the `--volume-from` option.
+
+> Note: The term "simple," "sharable," and "volume containers" aren’t official Docker terminology. They're better understood using the names above.
+
+---
+
+## 🔧 Commands & Examples
+
+### ✅ Attach Host Directory as Volume
+
+```bash
+mkdir /data
+docker run --name u1 -it -v /data:/data ubuntu
+```
+
+- Creates a container `u1` with `/data` directory mounted from the host.
+- You can now read/write to `/data` from both host and container.
+
+### 🔗 Share Volume Between Containers
+
+```bash
+docker run --name u1 -v /data:/data ubuntu
+docker run --name u2 --volume-from u1 ubuntu
+docker run --name u3 --volume-from u2 ubuntu
+```
+
+- Container `u2` and `u3` share the volume from `u1`.
+- Ideal for data sharing between containers.
+
+---
+
+### 📁 Create and Use a Named Volume
+
+```bash
+docker volume create myvolume
+docker volume ls
+docker volume inspect myvolume
+```
+
+> Inspecting shows the mount path (e.g., `/var/lib/docker/volumes/myvolume/_data`).
+
+```bash
+docker run --name u1 -it -v myvolume:/tmp ubuntu
+docker run --name u2 -it -v myvolume:/home ubuntu
+```
+
+- `myvolume` is attached to both containers at different mount points.
+
+---
+
+### 🖼️ Customized Web Page with Nginx and Volume
+
+1. Create a test file:
+```bash
+echo "Hello from Docker Volume!" > /var/lib/docker/volumes/myvolume/_data/index.html
+```
+
+2. Run Nginx with the volume mounted:
+```bash
+docker run --name mynginx -p 8080:80 -v myvolume:/usr/share/nginx/html -d nginx
+```
+
+3. Alternatively:
+```bash
+docker run --name webserver -P -v myvolume:/usr/share/nginx/html -d nginx
+```
+
+4. Test in browser or terminal:
+```bash
+curl http://localhost:8080
+```
